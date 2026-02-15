@@ -1,11 +1,11 @@
 import type { NextAuthOptions } from "next-auth";
-import Credentials from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { prisma } from "@/lib/prisma";
 
 
-export const authOptions:
-NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
+    
     session: {strategy: "jwt"},
 
     providers: [
