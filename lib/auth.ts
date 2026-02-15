@@ -24,7 +24,7 @@ NextAuthOptions = {
                 const user = await prisma.user.findUnique({ where: {email}});
                 if(!user) return null;
 
-                const ok = await bcrypt.compare(password user.password);
+                const ok = await bcrypt.compare(password, user.password);
                 if(!ok) return null
 
                 return {
