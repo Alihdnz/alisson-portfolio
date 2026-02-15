@@ -13,8 +13,6 @@
 # testing
 /coverage
 
-/prisma
-prisma.config.ts
 
 # next.js
 /.next/

@@ -1,0 +1,48 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+enum Role {
+    ADMIN
+    USER
+}
+
+model User {
+    id String @id @default(uuid())
+    name String
+    email String @unique
+    password String 
+    role Role @default(USER)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Project {
+    id String @id @default(uuid())
+    slug String @unique
+    title String 
+    summary String 
+    contentMd String
+    coverImageUrl String?
+    tags String[] @default([])
+    published Boolean @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Post {
+    id String @id @default(uuid())
+    slug String @unique
+    title String
+    excerpt String
+    contentMd String
+    coverImageUrl String?
+    published Boolean @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
