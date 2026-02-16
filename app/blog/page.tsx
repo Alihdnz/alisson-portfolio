@@ -26,15 +26,7 @@ export default async function BlogPage() {
                 <CardContent className="space-y-2">
                   <p className="text-sm text-muted-foreground line-clamp-3">{p.excerpt}</p>
 
-                  {p.tags?.length ? (
-                    <div className="flex flex-wrap gap-2">
-                      {p.tags.slice(0, 6).map((t) => (
-                        <Badge key={t} variant="secondary">
-                          {t}
-                        </Badge>
-                      ))}
-                    </div>
-                  ) : null}
+                 
                 </CardContent>
               </Card>
             </Link>
