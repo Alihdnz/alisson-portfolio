@@ -1,13 +1,14 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { PostForm } from "../../PostForm";
+import { PostForm } from "../../postForm";
 import { DeletePostButton } from "./delete-button";
 
-type Props = { params: { id: string } };
+type Props = { params: Promise<{ id: string }> };
 
 export default async function EditPostPage({ params }: Props) {
   const session = await getServerSession(authOptions);
+  const { id } = await params;
 
   if (!session?.user || session.user.role !== "ADMIN") {
     return (
@@ -17,7 +18,7 @@ export default async function EditPostPage({ params }: Props) {
     );
   }
 
-  const post = await prisma.post.findUnique({ where: { id: params.id } });
+  const post = await prisma.post.findUnique({ where: { id } });
 
   if (!post) {
     return (
@@ -42,7 +43,6 @@ export default async function EditPostPage({ params }: Props) {
           excerpt: post.excerpt,
           contentMd: post.contentMd,
           coverImageUrl: post.coverImageUrl ?? "",
-          tagsCsv: (post.tags ?? []).join(", "),
           published: post.published,
         }}
       />

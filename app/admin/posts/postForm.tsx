@@ -15,7 +15,6 @@ type PostFormValues = {
   excerpt: string;
   contentMd: string;
   coverImageUrl?: string | null;
-  tagsCsv: string;
   published: boolean;
 };
 
@@ -50,7 +49,6 @@ export function PostForm(props: {
       excerpt: props.initialValues?.excerpt ?? "",
       contentMd: props.initialValues?.contentMd ?? "",
       coverImageUrl: props.initialValues?.coverImageUrl ?? "",
-      tagsCsv: props.initialValues?.tagsCsv ?? "",
       published: props.initialValues?.published ?? false,
     }),
     [props.initialValues]
@@ -59,8 +57,6 @@ export function PostForm(props: {
   const [values, setValues] = useState<PostFormValues>(initial);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const tagsPreview = useMemo(() => toTags(values.tagsCsv), [values.tagsCsv]);
 
   const onAutoSlug = () => setValues((v) => ({ ...v, slug: slugify(v.title) }));
 
@@ -75,7 +71,6 @@ export function PostForm(props: {
       excerpt: values.excerpt,
       contentMd: values.contentMd,
       coverImageUrl: values.coverImageUrl?.toString().trim() || null,
-      tags: toTags(values.tagsCsv),
       published: values.published,
     };
 
@@ -163,24 +158,7 @@ export function PostForm(props: {
             />
           </div>
 
-          <div className="grid gap-3">
-            <label className="text-sm font-medium">Tags (comma separated)</label>
-            <Input
-              value={values.tagsCsv}
-              onChange={(e) => setValues((v) => ({ ...v, tagsCsv: e.target.value }))}
-              placeholder="nextjs, auth, prisma"
-            />
 
-            {tagsPreview.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {tagsPreview.map((t) => (
-                  <Badge key={t} variant="secondary">
-                    {t}
-                  </Badge>
-                ))}
-              </div>
-            )}
-          </div>
 
           <div className="flex items-center gap-3">
             <input

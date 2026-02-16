@@ -28,7 +28,6 @@ export async function POST(req: Request) {
     excerpt: string;
     contentMd: string;
     coverImageUrl?: string | null;
-    tags?: string[];
     published?: boolean;
   };
 
@@ -43,7 +42,6 @@ export async function POST(req: Request) {
       excerpt: body.excerpt.trim(),
       contentMd: body.contentMd,
       coverImageUrl: body.coverImageUrl?.trim() || null,
-      tags: body.tags ?? [],
       published: !!body.published,
     },
   });
