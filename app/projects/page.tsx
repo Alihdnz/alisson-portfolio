@@ -1,0 +1,45 @@
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+
+export default async function ProjectsPage() {
+  const projects = await prisma.project.findMany({
+    where: { published: true },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return (
+    <main className="p-6 max-w-5xl mx-auto space-y-4">
+      <h1 className="text-2xl font-semibold">Projects</h1>
+
+      {projects.length === 0 ? (
+        <p className="text-sm text-muted-foreground">No projects published yet.</p>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {projects.map((p) => (
+            <Link key={p.id} href={`/projects/${p.slug}`}>
+              <Card className="h-full hover:shadow-sm transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-base">{p.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <p className="text-sm text-muted-foreground line-clamp-3">{p.summary}</p>
+                  {p.tags?.length ? (
+                    <div className="flex flex-wrap gap-2">
+                      {p.tags.slice(0, 6).map((t) => (
+                        <Badge key={t} variant="secondary">
+                          {t}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : null}
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      )}
+    </main>
+  );
+}
